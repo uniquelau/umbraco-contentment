@@ -291,6 +291,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="DataEditors\BoxList\BoxListDataListEditor.cs" />
     <Compile Include="DataEditors\ConfigurationEditor\ConfigurationEditorService.cs" />
     <Compile Include="DataEditors\DataList\DataListItemAttribute.cs" />
     <Compile Include="DataEditors\Cards\CardsDataListEditor.cs" />
@@ -392,6 +393,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AjaxMin.xml" />
+    <Content Include="DataEditors\BoxList\box-list.html" />
+    <Content Include="DataEditors\BoxList\box-list.js" />
     <Content Include="DataEditors\Cards\cards.css" />
     <Content Include="DataEditors\CheckboxList\checkbox-list.css" />
     <Content Include="DataEditors\Cards\cards.html" />

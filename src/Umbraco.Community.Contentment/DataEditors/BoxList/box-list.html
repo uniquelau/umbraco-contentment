@@ -1,0 +1,25 @@
+﻿<!-- Copyright © 2019 Lee Kelleher, Umbrella Inc and other contributors.
+   - This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<div class="contentment" ng-controller="Umbraco.Community.Contentment.DataEditors.BoxList.Controller as vm">
+
+    <ul class="umb-actions umb-actions-child">
+        <li class="umb-action" ng-repeat="item in vm.items" ng-class="{'selected': item.checked}">
+            <a class="umb-action-link" ng-click="vm.changed(item)">
+                <i class="large icon {{item.icon || 'icon-document'}}"></i>
+                <span class="menu-label">
+                    {{item.name}}
+                    <small>{{item.description}}</small>
+                </span>
+            </a>
+        </li>
+    </ul>
+
+    <details open>
+        <summary>Debug</summary>
+        <pre>{{model.value | json}}</pre>
+    </details>
+
+</div>
