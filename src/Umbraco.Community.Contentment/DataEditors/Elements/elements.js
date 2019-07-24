@@ -3,16 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.Element.Controller", [
+angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.Elements.Controller", [
     "$scope",
+    "clipboardService",
     "editorService",
     "localizationService",
     "overlayService",
-    function ($scope, editorService, localizationService, overlayService) {
+    function ($scope, clipboardService, editorService, localizationService, overlayService) {
 
-        // console.log("element.model", $scope.model);
+        // console.log("elements.model", $scope.model);
 
         var defaultConfig = {
+            allowCopy: 1,
             allowEdit: 1,
             allowRemove: 1,
             disableSorting: 0,
@@ -39,6 +41,7 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.
             }
 
             vm.allowAdd = (config.maxItems === 0 || config.maxItems === "0") || $scope.model.value.length < config.maxItems;
+            vm.allowCopy = Object.toBoolean(config.allowCopy) && clipboardService.isSupported();
             vm.allowEdit = Object.toBoolean(config.allowEdit);
             vm.allowRemove = Object.toBoolean(config.allowRemove);
             vm.sortable = Object.toBoolean(config.disableSorting) === false && (config.maxItems !== 1 && config.maxItems !== "1");
@@ -57,6 +60,7 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.
             };
 
             vm.add = add;
+            vm.copy = copy;
             vm.edit = edit;
             vm.remove = remove;
         };
@@ -88,11 +92,18 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.
             });
         };
 
+        function copy($index) {
+
+            var item = $scope.model.value[$index];
+
+            clipboardService.copy("contentment.element", item.elementType, item);
+        };
+
         function edit($index) {
 
-            var value = $scope.model.value[$index];
+            var item = $scope.model.value[$index];
             var elementType = _.find(config.elementTypes, function (x) {
-                return x.key === value.elementType;
+                return x.key === item.elementType;
             });
 
             editorService.open({
@@ -100,7 +111,7 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.
                     elementType: elementType
                 },
                 size: config.overlaySize,
-                value: value,
+                value: item,
                 view: config.overlayView,
                 submit: function (model) {
                     $scope.model.value[$index] = model;

@@ -29,7 +29,7 @@ namespace Umbraco.Community.Contentment.Composing
                     .Exclude<ConfigurationEditorDataEditor>()
                     .Exclude<DataTableDataEditor>()
                     .Exclude<DropdownListDataEditor>()
-                    .Exclude<ElementDataEditor>()
+                    .Exclude<ElementsDataEditor>()
                     .Exclude<ItemPickerDataEditor>()
                     .Exclude<MacroPickerDataEditor>()
                     .Exclude<RadioButtonListDataEditor>()

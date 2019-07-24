@@ -13,7 +13,7 @@ using Umbraco.Core.Serialization;
 namespace Umbraco.Community.Contentment.DataEditors
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    internal sealed class ElementModel
+    internal sealed class ElementsItemModel
     {
         public Guid ElementType { get; set; }
 

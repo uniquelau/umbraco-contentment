@@ -44,6 +44,15 @@ namespace Umbraco.Community.Contentment.Web.PublishedCache
 
         public object GetValue(string culture = null, string segment = null) => _objectValue.Value;
 
+        // TODO: [LK:2019-09-27] Error with `TagsValueConverter`, throws an error is empty.
+        // Raise PR with Umbraco CMS.
+        // if `source == string.Empty`, then the `jArray` will be `null`
+        // and `jArray.ToObject` will throw a `NullReferenceException` when `GetValue()` is called.
+        // https://github.com/umbraco/Umbraco-CMS/blob/release-8.1.5/src/Umbraco.Core/PropertyEditors/ValueConverters/TagsValueConverter.cs#L38-L39
+
+        // TODO: [LK:2019-09-27] If the `MediaPickerValueConverter` has an empty value, it will return `Udi[]`, if it does have a value, then it's `IPublishedElement[]`.
+        // https://github.com/umbraco/Umbraco-CMS/blob/release-8.1.5/src/Umbraco.Web/PropertyEditors/ValueConverters/MediaPickerValueConverter.cs#L90
+
         public object GetXPathValue(string culture = null, string segment = null) => _xpathValue.Value;
 
         public bool HasValue(string culture = null, string segment = null) => _sourceValue != null && _sourceValue.ToString().Trim().Length > 0;

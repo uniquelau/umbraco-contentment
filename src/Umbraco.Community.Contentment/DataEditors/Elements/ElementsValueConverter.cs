@@ -32,7 +32,7 @@ namespace Umbraco.Community.Contentment.DataEditors
             _publishedSnapshotAccessor = publishedSnapshotAccessor;
         }
 
-        public override bool IsConverter(IPublishedPropertyType propertyType) => propertyType.EditorAlias.InvariantEquals(ElementDataEditor.DataEditorAlias);
+        public override bool IsConverter(IPublishedPropertyType propertyType) => propertyType.EditorAlias.InvariantEquals(ElementsDataEditor.DataEditorAlias);
 
         public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Element;
 
@@ -42,7 +42,7 @@ namespace Umbraco.Community.Contentment.DataEditors
         {
             if (source is string value)
             {
-                return JsonConvert.DeserializeObject<IEnumerable<ElementModel>>(value);
+                return JsonConvert.DeserializeObject<IEnumerable<ElementsItemModel>>(value);
             }
 
             return base.ConvertSourceToIntermediate(owner, propertyType, source, preview);
@@ -50,7 +50,7 @@ namespace Umbraco.Community.Contentment.DataEditors
 
         public override object ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object inter, bool preview)
         {
-            if (inter is IEnumerable<ElementModel> items)
+            if (inter is IEnumerable<ElementsItemModel> items)
             {
                 var elements = new List<IPublishedElement>();
 

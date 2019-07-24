@@ -14,7 +14,7 @@ using Umbraco.Core.Services;
 
 namespace Umbraco.Community.Contentment.DataEditors
 {
-    internal sealed class ElementConfigurationEditor : ConfigurationEditor
+    internal sealed class ElementsConfigurationEditor : ConfigurationEditor
     {
         private readonly IContentService _contentService;
         private readonly IContentTypeService _contentTypeService;
@@ -22,7 +22,7 @@ namespace Umbraco.Community.Contentment.DataEditors
 
         internal const string OverlayView = "overlayView";
 
-        public ElementConfigurationEditor(IContentService contentService, IContentTypeService contentTypeService, IdkMap idkMap)
+        public ElementsConfigurationEditor(IContentService contentService, IContentTypeService contentTypeService, IdkMap idkMap)
             : base()
         {
             _contentService = contentService;
@@ -30,10 +30,12 @@ namespace Umbraco.Community.Contentment.DataEditors
             _idkMap = idkMap;
 
             Fields.Add(new ElementTypesConfigurationField(contentTypeService));
+            Fields.Add(new ElementsDisplayModeConfigurationField());
             Fields.Add(new EnableFilterConfigurationField());
             Fields.Add(new OverlaySizeConfigurationField { Name = "Editor overlay size" });
             Fields.Add(new MaxItemsConfigurationField());
             Fields.Add(new DisableSortingConfigurationField());
+            Fields.Add(new HideLabelConfigurationField());
         }
 
         public override IDictionary<string, object> ToValueEditor(object configuration)
@@ -93,10 +95,36 @@ namespace Umbraco.Community.Contentment.DataEditors
 
             if (config.ContainsKey(OverlayView) == false)
             {
-                config.Add(OverlayView, IOHelper.ResolveUrl(ElementDataEditor.DataEditorOverlayViewPath));
+                config.Add(OverlayView, IOHelper.ResolveUrl(ElementsDataEditor.DataEditorOverlayViewPath));
             }
 
             return config;
+        }
+
+        internal class ElementsDisplayModeConfigurationField : ConfigurationField
+        {
+            public const string DisplayMode = "displayMode";
+            public const string List = ElementsDataEditor.DataEditorListViewPath;
+            public const string Blocks = ElementsDataEditor.DataEditorBlocksViewPath;
+
+            public ElementsDisplayModeConfigurationField(string defaultValue = List)
+                : base()
+            {
+                Key = DisplayMode;
+                Name = "Display mode?";
+                Description = "Select to display the elements in a list or as stacked blocks.";
+                View = IOHelper.ResolveUrl(RadioButtonListDataEditor.DataEditorViewPath);
+                Config = new Dictionary<string, object>
+                {
+                    { RadioButtonListConfigurationEditor.Items, new DataListItem[]
+                        {
+                            new DataListItem { Name = nameof(List), Value = List, Description = "This will display similar to a content picker." },
+                            new DataListItem { Name = nameof(Blocks), Value = Blocks, Description = "This will display similar to UMCO's Stacked Content." },
+                        }
+                    },
+                    { RadioButtonListConfigurationEditor.DefaultValue, defaultValue }
+                };
+            }
         }
     }
 }

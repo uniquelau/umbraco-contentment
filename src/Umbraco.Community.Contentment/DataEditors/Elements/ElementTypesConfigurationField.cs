@@ -24,15 +24,15 @@ namespace Umbraco.Community.Contentment.DataEditors
         public ElementTypesConfigurationField(IContentTypeService contentTypeService)
         {
             var items = contentTypeService
-            .GetAllElementTypes()
-            .OrderBy(x => x.Name)
-            .Select(x => new DataListItem
-            {
-                Description = x.Description,
-                Icon = x.Icon,
-                Name = x.Name,
-                Value = x.GetUdi().ToString(),
-            });
+                .GetAllElementTypes()
+                .OrderBy(x => x.Name)
+                .Select(x => new DataListItem
+                {
+                    Description = x.Description,
+                    Icon = x.Icon,
+                    Name = x.Name,
+                    Value = x.GetUdi().ToString(),
+                });
 
             Key = ElementTypes;
             Name = "Element types";

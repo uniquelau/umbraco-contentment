@@ -3,15 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-angular.module("umbraco").controller("Umbraco.Community.Contentment.Overlays.Element.Controller", [
+angular.module("umbraco").controller("Umbraco.Community.Contentment.Overlays.Elements.Controller", [
     "$q",
     "$scope",
     "blueprintConfig",
+    "clipboardService",
     "contentResource",
     "versionHelper",
-    function ($q, $scope, blueprintConfig, contentResource, versionHelper) {
+    function ($q, $scope, blueprintConfig, clipboardService, contentResource, versionHelper) {
 
-        // console.log("element-overlay.model", $scope.model, blueprintConfig);
+        // console.log("elements-overlay.model", $scope.model, blueprintConfig);
 
         var defaultConfig = {
             defaultAppAlias: "umbContent",
@@ -42,24 +43,50 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.Overlays.Ele
 
             if (config.elementType && $scope.model.value) {
 
-                vm.mode = "edit";
-
                 edit(config.elementType, $scope.model.value);
 
             } else {
 
                 vm.mode = "select";
-                vm.title = "Select an element type...";
                 vm.items = config.elementTypes;
-                vm.selectBlueprint = false;
-                vm.enableFilter = true;
                 vm.orderBy = "name";
-
                 vm.selectedElementType = null;
 
-                vm.select = select;
-                vm.create = create;
+                if (config.elementTypes.length > 1) {
+
+                    vm.title = "Select an element type...";
+                    vm.selectBlueprint = false;
+                    vm.enableFilter = true;
+
+                    vm.clipboardItems = clipboardService.retriveDataOfType("contentment.element", _.pluck(config.elementTypes, "key"));
+
+                    vm.select = select;
+                    vm.paste = paste;
+
+                    vm.clear = clear;
+                    vm.prompt = false;
+                    vm.showPrompt = showPrompt;
+                    vm.hidePrompt = hidePrompt;
+
+                } else {
+
+                    select(config.elementTypes[0]);
+
+                }
             }
+        };
+
+        function clear() {
+            vm.clipboardItems = [];
+            clipboardService.clearEntriesOfType("contentment.element", _.pluck(config.elementTypes, "key"));
+        };
+
+        function showPrompt() {
+            vm.prompt = true;
+        };
+
+        function hidePrompt() {
+            vm.prompt = false;
         };
 
         function select(elementType) {
@@ -73,6 +100,7 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.Overlays.Ele
                     vm.selectBlueprint = true;
                     vm.selectedElementType = elementType;
                     vm.blueprintAllowBlank = blueprintConfig.allowBlank;
+                    vm.create = create;
                 }
             } else {
                 create(elementType);
@@ -103,7 +131,20 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.Overlays.Ele
             };
         };
 
+        function paste(element) {
+
+            var elementType = _.find(config.elementTypes, function (x) {
+                return x.key === element.elementType;
+            });
+
+            $scope.model.size = config.editOverlaySize;
+
+            edit(elementType, element);
+        };
+
         function edit(elementType, element) {
+
+            vm.mode = "edit";
 
             vm.isNew = false;
 

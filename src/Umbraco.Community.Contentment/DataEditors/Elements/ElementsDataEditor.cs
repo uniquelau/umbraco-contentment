@@ -22,19 +22,21 @@ namespace Umbraco.Community.Contentment.DataEditors
         Icon = DataEditorIcon
 #endif
         )]
-    internal sealed class ElementDataEditor : DataEditor
+    internal sealed class ElementsDataEditor : DataEditor
     {
-        internal const string DataEditorAlias = Constants.Internals.DataEditorAliasPrefix + "Element";
-        internal const string DataEditorName = Constants.Internals.DataEditorNamePrefix + "Element";
-        internal const string DataEditorViewPath = Constants.Internals.EditorsPathRoot + "element.html";
-        internal const string DataEditorOverlayViewPath = Constants.Internals.EditorsPathRoot + "element.overlay.html";
+        internal const string DataEditorAlias = Constants.Internals.DataEditorAliasPrefix + "Elements";
+        internal const string DataEditorName = Constants.Internals.DataEditorNamePrefix + "Elements";
+        internal const string DataEditorViewPath = Constants.Internals.EditorsPathRoot + "_empty.html";
+        internal const string DataEditorListViewPath = Constants.Internals.EditorsPathRoot + "elements-list.html";
+        internal const string DataEditorBlocksViewPath = Constants.Internals.EditorsPathRoot + "elements-blocks.html";
+        internal const string DataEditorOverlayViewPath = Constants.Internals.EditorsPathRoot + "elements.overlay.html";
         internal const string DataEditorIcon = "icon-item-arrangement";
 
         private readonly IContentService _contentService;
         private readonly IContentTypeService _contentTypeService;
         private readonly IdkMap _idkMap;
 
-        public ElementDataEditor(ILogger logger, IContentService contentService, IContentTypeService contentTypeService, IdkMap idkMap)
+        public ElementsDataEditor(ILogger logger, IContentService contentService, IContentTypeService contentTypeService, IdkMap idkMap)
             : base(logger)
         {
             _contentService = contentService;
@@ -42,6 +44,8 @@ namespace Umbraco.Community.Contentment.DataEditors
             _idkMap = idkMap;
         }
 
-        protected override IConfigurationEditor CreateConfigurationEditor() => new ElementConfigurationEditor(_contentService, _contentTypeService, _idkMap);
+        protected override IConfigurationEditor CreateConfigurationEditor() => new ElementsConfigurationEditor(_contentService, _contentTypeService, _idkMap);
+
+        protected override IDataValueEditor CreateValueEditor() => new ElementsDataValueEditor(Attribute);
     }
 }
