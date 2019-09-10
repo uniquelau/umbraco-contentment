@@ -1,0 +1,43 @@
+﻿<!-- Copyright © 2019 Lee Kelleher.
+   - This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<div class="contentment umb-contentpicker" ng-controller="Umbraco.Community.Contentment.DataEditors.Flow.Controller as vm">
+
+    <!-- TODO: [LK:2019-09-10] The UI could be inspired by UmbracoForms workflow UI? (boxes with arrows going downwards) -->
+    <!--
+        Show a circle (with a plus/add-icon) to start with.
+        When selected a list of "start" items will appear - these'll be various data sources.
+        Once selected/configured, the circle will change to half-circle/half-square (e.g. starting block).
+        Then have a square add (plus) button, for the next step / process.
+        When selected a list of "process" items will appear (transformation stuff).
+        Each of these will be added to the sequence.
+    -->
+    <div class="lk-icon-wrapper" ng-if="model.value.length > 0">
+        <div class="lk-line"></div>
+
+        <a class="lk-icon-picker-small" href="" ng-class="{ 'lk-start': $index === 0 }" ng-click="vm.edit($index)" prevent-default ng-repeat="item in model.value">
+            <i class="icon medium" ng-class="item.icon"></i>
+        </a>
+
+        <div class="lk-end"></div>
+    </div>
+
+    <div ui-sortable="vm.sortableOptions" ng-model="model.value">
+        <umb-node-preview ng-repeat="item in model.value"
+                          icon="item.icon"
+                          name="item.name"
+                          published="true"
+                          description="item.description"
+                          sortable="vm.sortable"
+                          allow-remove="vm.allowRemove"
+                          allow-edit="vm.allowEdit"
+                          on-remove="vm.remove($index)"
+                          on-edit="vm.edit($index)">
+        </umb-node-preview>
+    </div>
+    <a class="umb-node-preview-add" href="" ng-click="vm.add()" ng-if="vm.allowAdd" prevent-default>
+        <localize key="general_add">Add</localize>
+    </a>
+</div>

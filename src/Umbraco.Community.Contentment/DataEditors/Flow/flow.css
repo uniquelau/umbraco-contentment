@@ -1,0 +1,50 @@
+﻿/* Copyright © 2019 Lee Kelleher, Umbrella Inc and other contributors.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.contentment .lk-icon-wrapper {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+    .contentment .lk-icon-wrapper .lk-line {
+        background-color: #d8d7d9;
+        height: 1px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 30px;
+    }
+
+    .contentment .lk-icon-wrapper .lk-start {
+        border-radius: 50% 0% 0% 50%;
+    }
+
+    .contentment .lk-icon-wrapper .lk-end {
+        border-left: solid 1px #d8d7d9;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .contentment .lk-icon-wrapper .lk-icon-picker-small {
+        background-color: white;
+        margin-right: 30px;
+        position: relative;
+        border: 1px dashed #d8d7d9;
+        color: #d8d7d9;
+        display: inline-block;
+        height: 40px;
+        padding: 20px 0 0 0;
+        text-align: center;
+        width: 60px;
+    }
+
+        .contentment .lk-icon-wrapper .lk-icon-picker-small:focus,
+        .contentment .lk-icon-wrapper .lk-icon-picker-small:hover {
+            border-color: #2152a3;
+            color: #2152a3;
+            text-decoration: none;
+        }

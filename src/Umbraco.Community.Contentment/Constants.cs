@@ -33,6 +33,8 @@ namespace Umbraco.Community.Contentment
                 public const string Code = "Code";
 
                 public const string Display = "Display";
+
+                public const string ZeroCode = "Zero Code";
             }
         }
 
