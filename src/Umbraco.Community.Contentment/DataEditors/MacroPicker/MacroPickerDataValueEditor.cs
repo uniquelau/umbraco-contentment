@@ -9,9 +9,9 @@ using Umbraco.Core.PropertyEditors;
 
 namespace Umbraco.Community.Contentment.DataEditors
 {
-    internal sealed class ElementsDataValueEditor : HideLabelDataValueEditor
+    internal sealed class MacroPickerDataValueEditor : HideLabelDataValueEditor
     {
-        public ElementsDataValueEditor(DataEditorAttribute attribute)
+        public MacroPickerDataValueEditor(DataEditorAttribute attribute)
             : base(attribute)
         { }
 
@@ -22,18 +22,15 @@ namespace Umbraco.Community.Contentment.DataEditors
             {
                 base.Configuration = value;
 
-                // NOTE: I'd have preferred to do this in `ElementConfigurationEditor.ToValueEditor`, but I couldn't alter the `View` from there.
+                // NOTE: I'd have preferred to do this in `MacroPickerConfigurationEditor.ToValueEditor`, but I couldn't alter the `View` from there.
                 // ...and this method is triggered before `ToValueEditor`, and there's nowhere else I can manipulate the configuration values. [LK]
                 if (value is Dictionary<string, object> config &&
-                    config.TryGetValue(ElementsConfigurationEditor.ElementsDisplayModeConfigurationField.DisplayMode, out var displayMode) &&
+                    config.TryGetValue(MacroPickerConfigurationEditor.MacroPickerDisplayModeConfigurationField.DisplayMode, out var displayMode) &&
                     displayMode is string view)
                 {
                     View = IOHelper.ResolveUrl(view);
                 }
             }
         }
-
-        // TODO: [LK:2019-09-27] Might need to look at how NestedContent handles the `ConvertDbToString` and `ToEditor` and `FromEditor` recursive calls.
-        // https://github.com/umbraco/Umbraco-CMS/blob/release-8.1.5/src/Umbraco.Web/PropertyEditors/NestedContentPropertyEditor.cs
     }
 }

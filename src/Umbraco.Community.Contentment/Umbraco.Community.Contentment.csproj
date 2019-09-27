@@ -291,6 +291,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ContentmentVersion.cs" />
+    <Compile Include="DataEditors\MacroPicker\MacroPickerDataValueEditor.cs" />
     <Compile Include="DataEditors\TextInput\TextInputDataListEditor.cs" />
     <Compile Include="Experience\HidePropertyLabelComponent.cs" />
     <Compile Include="Experience\MarkdownPropertyDescriptionComponent.cs" />
@@ -456,7 +457,8 @@
     <Content Include="DataEditors\ItemPicker\item-picker.overlay.css" />
     <Content Include="DataEditors\ItemPicker\item-picker.overlay.html" />
     <Content Include="DataEditors\ItemPicker\item-picker.overlay.js" />
-    <Content Include="DataEditors\MacroPicker\macro-picker.html" />
+    <Content Include="DataEditors\MacroPicker\macro-picker-blocks.html" />
+    <Content Include="DataEditors\MacroPicker\macro-picker-list.html" />
     <Content Include="DataEditors\MacroPicker\macro-picker.js" />
     <Content Include="DataEditors\Notes\notes.html" />
     <Content Include="DataEditors\RadioButtonList\radio-button-list.css" />

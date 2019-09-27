@@ -52,6 +52,7 @@ namespace Umbraco.Community.Contentment.DataEditors
 
             // TODO: [LK:2019-09-25] Consider having a block-based UI option.
 
+            Fields.Add(new MacroPickerDisplayModeConfigurationField());
             Fields.Add(new MaxItemsConfigurationField());
             Fields.Add(new DisableSortingConfigurationField());
         }
@@ -77,7 +78,40 @@ namespace Umbraco.Community.Contentment.DataEditors
                 config.Remove(AllowedMacros);
             }
 
+            if (config.TryGetValue(MacroPickerDisplayModeConfigurationField.DisplayMode, out var tmp2) && tmp2 is string displayMode)
+            {
+
+            }
+
+            // /App_Plugins/Contentment/editors/macro-picker-blocks.html
+
             return config;
+        }
+
+        internal class MacroPickerDisplayModeConfigurationField : ConfigurationField
+        {
+            public const string DisplayMode = "displayMode";
+            public const string List = MacroPickerDataEditor.DataEditorListViewPath;
+            public const string Blocks = MacroPickerDataEditor.DataEditorBlocksViewPath;
+
+            public MacroPickerDisplayModeConfigurationField(string defaultValue = List)
+                : base()
+            {
+                Key = DisplayMode;
+                Name = "Display mode?";
+                Description = "Select to display the macros in a list or as stacked blocks.";
+                View = IOHelper.ResolveUrl(RadioButtonListDataEditor.DataEditorViewPath);
+                Config = new Dictionary<string, object>
+                {
+                    { RadioButtonListConfigurationEditor.Items, new DataListItem[]
+                        {
+                            new DataListItem { Name = nameof(List), Value = List, Description = "This will display similar to a content picker." },
+                            new DataListItem { Name = nameof(Blocks), Value = Blocks, Description = "This will display similar to UMCO's Stacked Content." },
+                        }
+                    },
+                    { RadioButtonListConfigurationEditor.DefaultValue, defaultValue }
+                };
+            }
         }
     }
 }

@@ -26,7 +26,9 @@ namespace Umbraco.Community.Contentment.DataEditors
     {
         internal const string DataEditorAlias = Constants.Internals.DataEditorAliasPrefix + "MacroPicker";
         internal const string DataEditorName = Constants.Internals.DataEditorNamePrefix + "Macro Picker";
-        internal const string DataEditorViewPath = Constants.Internals.EditorsPathRoot + "macro-picker.html";
+        internal const string DataEditorViewPath = Constants.Internals.EditorsPathRoot + "_empty.html";
+        internal const string DataEditorListViewPath = Constants.Internals.EditorsPathRoot + "macro-picker-list.html";
+        internal const string DataEditorBlocksViewPath = Constants.Internals.EditorsPathRoot + "macro-picker-blocks.html";
         internal const string DataEditorIcon = Core.Constants.Icons.Macro;
 
         private readonly IMacroService _macroService;
@@ -38,5 +40,7 @@ namespace Umbraco.Community.Contentment.DataEditors
         }
 
         protected override IConfigurationEditor CreateConfigurationEditor() => new MacroPickerConfigurationEditor(_macroService);
+
+        protected override IDataValueEditor CreateValueEditor() => new MacroPickerDataValueEditor(Attribute);
     }
 }

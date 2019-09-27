@@ -20,7 +20,7 @@ namespace Umbraco.Community.Contentment.DataEditors
                 Macro,
                 nameof(Macro),
                 "Select and configure the macro to be displayed.",
-                IOHelper.ResolveUrl(MacroPickerDataEditor.DataEditorViewPath),
+                IOHelper.ResolveUrl(MacroPickerDataEditor.DataEditorListViewPath),
                 new Dictionary<string, object>
                 {
                     { MaxItemsConfigurationField.MaxItems, 1 }

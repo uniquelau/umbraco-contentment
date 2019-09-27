@@ -5,13 +5,20 @@
 
 angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.MacroPicker.Controller", [
     "$scope",
+    "clipboardService",
     "entityResource",
     "editorService",
-    function ($scope, entityResource, editorService) {
+    "localizationService",
+    "overlayService",
+    function ($scope, clipboardService, entityResource, editorService, localizationService, overlayService) {
 
-        // console.log("macro-picker.model", $scope.model);
+        console.log("macro-picker.model", $scope.model);
 
         var defaultConfig = {
+            allowCopy: 0,
+            allowEdit: 1,
+            allowPreview: 0,
+            allowRemove: 1,
             availableMacros: [],
             maxItems: 0,
             disableSorting: 0
@@ -26,8 +33,10 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.
 
             vm.icon = "icon-settings-alt";
             vm.allowAdd = (config.maxItems === 0 || config.maxItems === "0") || $scope.model.value.length < config.maxItems;
-            vm.allowEdit = true;
-            vm.allowRemove = true;
+            vm.allowCopy = Object.toBoolean(config.allowCopy) && clipboardService.isSupported();
+            vm.allowEdit = Object.toBoolean(config.allowEdit);
+            vm.allowPreview = Object.toBoolean(config.allowPreview);
+            vm.allowRemove = Object.toBoolean(config.allowRemove);
             vm.published = true;
             vm.sortable = Object.toBoolean(config.disableSorting) === false && (config.maxItems !== 1 && config.maxItems !== "1");
 
@@ -45,6 +54,7 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.
             };
 
             vm.add = add;
+            vm.copy = copy;
             vm.edit = edit;
             vm.remove = remove;
         };
@@ -81,6 +91,13 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.
             editorService.macroPicker(macroPicker);
         };
 
+        function copy($index) {
+
+            var item = $scope.model.value[$index];
+
+            clipboardService.copy("contentment.macro", item.alias, item);
+        };
+
         function edit($index) {
             var item = $scope.model.value[$index];
             var macroPicker = {
@@ -110,13 +127,31 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.
         };
 
         function remove($index) {
-            $scope.model.value.splice($index, 1);
+            var keys = ["content_nestedContentDeleteItem", "general_delete", "general_cancel", "contentTypeEditor_yesDelete"];
+            localizationService.localizeMany(keys).then(function (data) {
+                overlayService.open({
+                    title: data[1],
+                    content: data[0],
+                    closeButtonLabel: data[2],
+                    submitButtonLabel: data[3],
+                    submitButtonStyle: "danger",
+                    submit: function () {
 
-            if ((config.maxItems === 0 || config.maxItems === "0") || $scope.model.value.length < config.maxItems) {
-                vm.allowAdd = true;
-            }
+                        $scope.model.value.splice($index, 1);
 
-            setDirty();
+                        if ((config.maxItems === 0 || config.maxItems === "0") || $scope.model.value.length < config.maxItems) {
+                            vm.allowAdd = true;
+                        }
+
+                        setDirty();
+
+                        overlayService.close();
+                    },
+                    close: function () {
+                        overlayService.close();
+                    }
+                });
+            });
         };
 
         function setDirty() {
