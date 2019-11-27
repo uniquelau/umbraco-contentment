@@ -4,13 +4,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.ContentBlocks.Controller", [
-    "$interpolate",
     "$scope",
+    "$http",
+    "$interpolate",
     "clipboardService",
     "editorService",
+    "editorState",
     "localizationService",
     "overlayService",
-    function ($interpolate, $scope, clipboardService, editorService, localizationService, overlayService) {
+    "umbRequestHelper",
+    function ($scope, $http, $interpolate, clipboardService, editorService, editorState, localizationService, overlayService, umbRequestHelper) {
 
         // console.log("content-blocks.model", $scope.model);
 
@@ -68,6 +71,30 @@ angular.module("umbraco").controller("Umbraco.Community.Contentment.DataEditors.
             vm.copy = copy;
             vm.edit = edit;
             vm.remove = remove;
+
+            vm.previews = [];
+            _.each($scope.model.value, function (item) {
+                if (config.elementTypeLookup[item.elementType].previewEnabled) {
+
+                    vm.previews[item.key] = { loading: true };
+
+                    umbRequestHelper.resourcePromise(
+                        $http.post(
+                            "backoffice/Contentment/ContentBlocksApi/GetPreviewMarkup",
+                            item,
+                            { params: { pageId: editorState.current.id } }
+                        ),
+                        "Failed to retrieve preview markup")
+                        .then(function (markup) {
+                            if (markup) {
+                                vm.previews[item.key] = {
+                                    loading: false,
+                                    markup: markup
+                                };
+                            }
+                        });
+                }
+            });
         };
 
         function add() {

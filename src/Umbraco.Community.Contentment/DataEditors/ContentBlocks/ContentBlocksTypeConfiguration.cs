@@ -25,5 +25,8 @@ namespace Umbraco.Community.Contentment.DataEditors
 
         [ConfigurationField(typeof(OverlaySizeConfigurationField))]
         public string OverlaySize { get; set; }
+
+        [ConfigurationField(typeof(EnablePreviewConfigurationField))]
+        public bool EnablePreview { get; set; }
     }
 }
