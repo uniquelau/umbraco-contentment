@@ -28,7 +28,7 @@ steps:
 - task: PowerShell@2
   displayName: Build Packages
   inputs:
-    filePath: '\Build\build-pkgs.ps1'
+    filePath: 'Build\build-pkgs.ps1'
     arguments: ';'
 
 - task: NuGetCommand@2
