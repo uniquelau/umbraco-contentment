@@ -134,3 +134,6 @@ $nugetPackageManifest = Join-Path -Path $buildFolder -ChildPath 'manifest-nuget.
 
 
 # Anything else?
+
+Write-Host 'Build NuGet Package';
+& $nuget_exe pack "${projectNamespace}.nuspec";

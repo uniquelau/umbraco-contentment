@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+  <Target Name="Pack"></Target>
+</Project>
