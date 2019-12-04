@@ -39,3 +39,4 @@ steps:
     nuGetFeedType: 'internal'
     publishVstsFeed: 'Cameraworks'
     versioningScheme: byBuildNumber
+    allowPackageConflicts: true
