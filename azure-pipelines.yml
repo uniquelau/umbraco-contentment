@@ -35,7 +35,7 @@ steps:
   displayName: 'NuGet Push Artifacts'
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/##*.symbols.nupkg'
+    packagesToPush: '**/*.nupkg;!**/##*.symbols.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'Cameraworks'
     versioningScheme: byBuildNumber
